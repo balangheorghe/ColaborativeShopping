@@ -1,3 +1,6 @@
 django
 django-allauth
 gunicorn
+dj-database-url 
+whitenoise 
+psycopg2
