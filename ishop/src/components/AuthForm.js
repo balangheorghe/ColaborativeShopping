@@ -2,8 +2,8 @@ import React, {useState} from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {Text, Button, Input} from 'react-native-elements';
 import Spacer from './Spacer';
-import FBLogin from "./FBLogin";
 import GoogleButton from "../login/GoogleLogin";
+import FacebookButton from "../login/FBLogin";
 
 const AuthForm = ({headerText, errorMessage, onSubmit, submitButtonText, goToText, switchScreen, social = false}) => {
     const [email, setEmail] = useState('');
@@ -45,10 +45,10 @@ const AuthForm = ({headerText, errorMessage, onSubmit, submitButtonText, goToTex
                 </TouchableOpacity>
             </Spacer>
             {social ? (
-                <Spacer>
-                    {/*<FBLogin/>*/}
-                    <GoogleButton social={social} />
-                </Spacer>
+                <View>
+                    <Spacer><GoogleButton social={(email, profile) => {social("google", email, profile)}} /></Spacer>
+                    <Spacer><FacebookButton social={(email, profile) => {social("facebook", email, profile)}} /></Spacer>
+                </View>
             ) : null}
         </View>
     );

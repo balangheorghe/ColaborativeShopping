@@ -16,8 +16,12 @@ const SigninScreen = ({navigation, actions, errorMessage}) => {
                 }}
                 goToText="Don't have an account? Create one."
                 switchScreen={() => {navigation.navigate("Signup")}}
-                social={(email, profile) => {
-                    actions.googleSignIn(email, profile)
+                social={(type, email, profile) => {
+                    if (type == "google") {
+                        actions.googleSignIn(email, profile)
+                    } else if (type == "facebook") {
+                        actions.facebookSignIn(email, profile)
+                    }
                 }}
             />
         </>

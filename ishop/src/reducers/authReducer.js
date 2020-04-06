@@ -1,4 +1,4 @@
-import {GOOGLE, SIGNIN, SIGNUP} from "../constants/auth";
+import {FACEBOOK, GOOGLE, SIGNIN, SIGNUP} from "../constants/auth";
 
 const initialState = {
     token: null,
@@ -18,6 +18,10 @@ const authReducer = (state = initialState, action) => {
                 ...state, ...action.payload
             };
         case GOOGLE:
+            return {
+                ...state, ...action.payload
+            };
+        case FACEBOOK:
             return {
                 ...state, ...action.payload
             };
