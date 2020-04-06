@@ -5,7 +5,7 @@ import Spacer from "../components/Spacer";
 import {signIn, signUp} from "../actions/authActions";
 import {connect} from 'react-redux';
 import {bindActionCreators} from "redux";
-import {connectMe, getConnections, AUTH} from "../store/connectConfig.py";
+import {connectMe, getConnections, AUTH} from "../store/connectConfig";
 import AuthForm from "../components/AuthForm";
 
 const SignupScreen = ({navigation, actions, errorMessage}) => {

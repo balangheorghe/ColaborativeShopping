@@ -1,4 +1,4 @@
-import {SIGNIN, SIGNUP} from "../constants/auth";
+import {GOOGLE, SIGNIN, SIGNUP} from "../constants/auth";
 import { useStore } from 'react-redux';
 
 export function signIn(email, password) {
@@ -15,5 +15,12 @@ export function signUp(email, password) {
     return {
         type: SIGNUP,
         payload: {token, errorMessage}
+    }
+}
+
+export function googleSignIn(email, profile, errorMessage="") {
+    return {
+        type: GOOGLE,
+        payload: {email, profile, errorMessage}
     }
 }

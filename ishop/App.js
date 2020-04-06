@@ -19,7 +19,7 @@ import configureStore from "./src/store/configureStore";
 import {signIn, signUp} from "./src/actions/authActions";
 import Text from "react-native-web/src/exports/Text";
 import {returnRejectedPromiseOnError} from "redux-axios-middleware";
-import {connectMe, AUTH} from "./src/store/connectConfig.py";
+import {connectMe, AUTH} from "./src/store/connectConfig";
 
 const AuthStack = createStackNavigator();
 const MainTab = createBottomTabNavigator();
@@ -32,7 +32,7 @@ function Main(props) {
         // <Provider>
         <ConnectedNavigation ref={navigationRef}>
             {
-                props.token ? (
+                props.email ? (
                     <MainTab.Navigator>
                         <MainTab.Screen name="ShoppingList" component={ShoppingListScreen}
                                         options={{title: 'ShoppingList'}}/>

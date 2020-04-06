@@ -1,8 +1,10 @@
-import {SIGNIN, SIGNUP} from "../constants/auth";
+import {GOOGLE, SIGNIN, SIGNUP} from "../constants/auth";
 
 const initialState = {
     token: null,
-    errorMessage: ''
+    errorMessage: '',
+    email: '',
+    profile: ''
 };
 
 const authReducer = (state = initialState, action) => {
@@ -12,6 +14,10 @@ const authReducer = (state = initialState, action) => {
                 ...state, ...action.payload
             };
         case SIGNUP:
+            return {
+                ...state, ...action.payload
+            };
+        case GOOGLE:
             return {
                 ...state, ...action.payload
             };

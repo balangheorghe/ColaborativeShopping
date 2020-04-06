@@ -1,5 +1,5 @@
 // contains all state properties which will be available to other components in the app
-import {signIn, signUp} from "../actions/authActions";
+import {signIn, signUp, googleSignIn} from "../actions/authActions";
 import {bindActionCreators} from "redux";
 import {connect} from 'react-redux';
 import {NavigationContainer} from "@react-navigation/native";
@@ -10,13 +10,15 @@ const mapStateToProps = {
     AUTH: state => {
         return {
             token: state.auth.token,  // reducer info
-            errorMessage: state.auth.errorMessage
+            errorMessage: state.auth.errorMessage,
+            email: state.auth.email,
+            profile: state.auth.profile
         }
     }
 };
 
 const ActionCreators = {
-    AUTH: Object.assign({}, {signIn, signUp})
+    AUTH: Object.assign({}, {signIn, signUp, googleSignIn})
 };
 
 const mapDispatchToProps = {

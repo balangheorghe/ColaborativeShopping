@@ -1,10 +1,10 @@
 import React from 'react';
 import {Text, View, StyleSheet, Button} from 'react-native';
 import AuthForm from "../components/AuthForm";
-import {connectMe, AUTH, getConnections} from "../store/connectConfig.py";
+import {connectMe, AUTH, getConnections} from "../store/connectConfig";
 import {connect} from "react-redux";
 
-const SigninScreen = ({navigation, errorMessage}) => {
+const SigninScreen = ({navigation, actions, errorMessage}) => {
     return (
         <>
             <AuthForm
@@ -12,11 +12,13 @@ const SigninScreen = ({navigation, errorMessage}) => {
                 errorMessage={errorMessage}
                 submitButtonText="Sign In"
                 onSubmit={(email, password) => {
-
+                    actions.signIn(email, password)
                 }}
                 goToText="Don't have an account? Create one."
                 switchScreen={() => {navigation.navigate("Signup")}}
-                social
+                social={(email, profile) => {
+                    actions.googleSignIn(email, profile)
+                }}
             />
         </>
     );
