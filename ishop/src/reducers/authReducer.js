@@ -1,10 +1,8 @@
 import {FACEBOOK, GOOGLE, SIGNIN, SIGNUP} from "../constants/auth";
 
 const initialState = {
-    token: null,
-    errorMessage: '',
-    email: '',
-    profile: ''
+    token: {token: null},
+    profile: {}
 };
 
 const authReducer = (state = initialState, action) => {

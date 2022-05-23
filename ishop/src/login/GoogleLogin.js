@@ -1,8 +1,8 @@
 import React from "react"
 import {StyleSheet, View, Image} from "react-native"
-import {Text, Button, Input} from 'react-native-elements';
-// import Expo from "expo";
+import {Text, Button, Input, SocialIcon} from 'react-native-elements';
 import * as Google from 'expo-google-app-auth';
+import {connectMe, AUTH} from "../store/connectConfig";
 
 async function signIn() {
     try {
@@ -11,14 +11,21 @@ async function signIn() {
             // iosClientId: ""
             scopes: ["profile", "email"]
         });
-        console.log("googleRes", result);
+        // console.log("googleRes", result);
+        const token = {
+            token: result.accessToken,
+            idToken: result.idToken,
+            refreshToken: result.refreshToken
+        };
         if (result.type === "success") {
-            console.log("googleProfile", result.user);
-            return {
+            // console.log("googleProfile", result.user);
+            const profile = {
                 email: result.user.email,
                 name: result.user.name,
+                id: result.user.id,
                 photoUrl: result.user.photoUrl
-            }
+            };
+            return {token, profile}
         } else {
             console.log("cancelled");
             return null;
@@ -29,21 +36,21 @@ async function signIn() {
     }
 }
 
-const GoogleButton = ({social}) => {
+const GoogleButton = ({social, actions}) => {
     return (
-        <View>
-            <Button
-                title="Continue with Google"
-                onPress={async () => {
-                    const data = await signIn();
-                    console.log("loggedin", data);
-                    social(data.email, data.name);
-                }}
-            />
-        </View>
+        <SocialIcon
+            type="google"
+            title="Continue with Google"
+            button
+            onPress={async () => {
+                const data = await signIn();
+                console.log("loggedin", data);
+                actions.googleSignIn(data.token, data.profile);
+            }}
+        />
     );
 };
 
 const styles = StyleSheet.create({});
 
-export default GoogleButton;
+export default connectMe(GoogleButton, AUTH, true, true);

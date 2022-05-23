@@ -1,8 +1,9 @@
 import React from "react"
 import axios from 'axios';
 import {StyleSheet, View, Image} from "react-native"
-import {Text, Button, Input, colors} from 'react-native-elements';
+import {Text, Button, Input, colors, SocialIcon} from 'react-native-elements';
 import * as Facebook from 'expo-facebook';
+import {connectMe, AUTH} from "../store/connectConfig";
 
 const mytoken = "EAAox6oBhQdIBAMoSXn4ke3xYuZBD8bAqw0Mo8jJYnrm33ZCiZBwVhRbcUebMxWo8iQU9SG9ynpc5Q1x9SokGZCrTZB9ZCGeITzcrhwYQnHPehYPGLkwGkyEUuqoU9ciDd677mzP4F0xwZB3ZCJFWKB255EK2QmHGE5mAZB5Arloo1MYX4C5WDZBYnndYtdciG5HqdMZBq6gq3CEK4BpbphZAKasJWEfxWCwXSTQRIjTmAIrsfQ4MZAZBb6RAms";
 
@@ -10,7 +11,7 @@ async function signIn() {
     try {
         await Facebook.initializeAsync('2869633013072338');
         const result = await Facebook.logInWithReadPermissionsAsync({
-            permissions: ['public_profile', 'email'],
+            permissions: ['public_profile', 'email', 'profile_pic'],
         });
         const {
             type,
@@ -22,11 +23,18 @@ async function signIn() {
         if (type === 'success') {
             // Get the user's name using Facebook's Graph API
             let {data} = await axios.get(`https://graph.facebook.com/me?access_token=${token}`);
-            let profile = await axios.get(`https://graph.facebook.com/${data.id}?fields=email&access_token=${token}`);
-            let {email} = profile.data;
+            let userProfile = await axios.get(`https://graph.facebook.com/${data.id}?fields=email,picture&access_token=${token}`);
+            console.log("facebook data", userProfile.data);  // 3143743055722083
+            let {email, picture} = userProfile.data;
+            const profile = {
+                email,
+                name: data.name,
+                photoUrl: picture.data.url,
+                id: data.id
+            };
             return {
-                email: email,
-                name: data.name
+                profile,
+                token: {token}
             };
         } else {
             console.log("cancelled");
@@ -38,23 +46,23 @@ async function signIn() {
     }
 }
 
-const FacebookButton = ({social}) => {
+const FacebookButton = ({social, actions}) => {
     return (
-        <View>
-            <Button
-                title="Continue with Facebook"
-                onPress={async () => {
-                    const data = await signIn();
-                    if(data) {
-                        console.log("loggedinFB", data);
-                        social(data.email, data.name);
-                    }
-                }}
-            />
-        </View>
+        <SocialIcon
+            type='facebook'
+            title='Continue with Facebook'
+            button
+            onPress={async () => {
+                const data = await signIn();
+                if(data) {
+                    console.log("loggedinFB", data);
+                    actions.facebookSignIn(data.token, data.profile);
+                }
+            }}
+        />
     );
 };
 
 const styles = StyleSheet.create({});
 
-export default FacebookButton;
+export default connectMe(FacebookButton, AUTH, true, true);

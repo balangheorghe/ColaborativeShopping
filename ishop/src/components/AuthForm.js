@@ -4,6 +4,7 @@ import {Text, Button, Input} from 'react-native-elements';
 import Spacer from './Spacer';
 import GoogleButton from "../login/GoogleLogin";
 import FacebookButton from "../login/FBLogin";
+import {connectMe, AUTH} from "../store/connectConfig";
 
 const AuthForm = ({headerText, errorMessage, onSubmit, submitButtonText, goToText, switchScreen, social = false}) => {
     const [email, setEmail] = useState('');
@@ -12,7 +13,7 @@ const AuthForm = ({headerText, errorMessage, onSubmit, submitButtonText, goToTex
     return (
         <View style={styles.container}>
             <Spacer>
-                <Text h3>{headerText}</Text>
+                {/*<Text h3>{headerText}</Text>*/}
             </Spacer>
             <Input
                 label="Email"
@@ -35,20 +36,21 @@ const AuthForm = ({headerText, errorMessage, onSubmit, submitButtonText, goToTex
             ) : null}
             <Spacer>
                 <Button
+                    type='outline'
                     title={submitButtonText}
                     onPress={() => onSubmit({email, password})}
                 />
             </Spacer>
             <Spacer>
                 <TouchableOpacity onPress={switchScreen} style={{alignSelf: 'center'}}>
-                    <Text style={{color: 'blue'}}>{goToText}</Text>
+                    <Text style={{color: '#4388D3'}}>{goToText}</Text>
                 </TouchableOpacity>
             </Spacer>
             {social ? (
-                <View>
-                    <Spacer><GoogleButton social={(email, profile) => {social("google", email, profile)}} /></Spacer>
-                    <Spacer><FacebookButton social={(email, profile) => {social("facebook", email, profile)}} /></Spacer>
-                </View>
+                <Spacer>
+                    <GoogleButton />
+                    <FacebookButton />
+                </Spacer>
             ) : null}
         </View>
     );
@@ -66,9 +68,9 @@ const styles = StyleSheet.create({
         // borderWidth: 10,
         flex: 1,
         justifyContent: 'center',
-        marginBottom: 250
+        marginBottom: 100
     },
 });
 
 // export default connectMe(AuthForm, AUTH, true, true);
-export default AuthForm;
+export default connectMe(AuthForm, AUTH, true, true);
